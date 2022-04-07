@@ -1,0 +1,133 @@
+
+
+  @keyframes roundtime {
+    to {
+      /* More performant than `width` */
+      transform: scaleX(0);
+    }
+  }
+  #switcher {
+    float: right;
+  }
+  .notification:after {
+    content: "";
+    display: block;
+    height: 3px;
+    width: 100%;
+    z-index: 1;
+    position: absolute;
+    left: 0;
+    bottom: 0px;
+    transform-origin: left center;
+    animation: roundtime calc(5s) linear forwards;
+  }
+  .notification.is-success:after {
+    background: white;
+  }
+  .notification.is-danger:after {
+    background: rgb(255, 255, 255);
+  }
+  .notification.is-warning:after {
+    background: black;
+  }
+  [v-cloak] > * {
+    display: none;
+  }
+  [v-cloak]::before {
+    content: "loading…";
+  }
+  @font-face {
+    font-family: "Manrope";
+    font-display: swap;
+    src: url(../fonts/Manrope-Regular.8ae23f32.woff2) format("woff2"),
+      url(../fonts/Manrope-Regular.871132a5.woff) format("woff");
+    font-weight: 400;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: "Manrope";
+    font-display: swap;
+    src: url(../fonts/Manrope-Medium.5db70385.woff2) format("woff2"),
+      url(../fonts/Manrope-Medium.e59358f6.woff) format("woff");
+    font-weight: 500;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: "Manrope";
+    font-display: swap;
+    src: url(../fonts/Manrope-Bold.09745328.woff2) format("woff2"),
+      url(../fonts/Manrope-Bold.ec201dfb.woff) format("woff");
+    font-weight: 700;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: "Manrope";
+    font-display: swap;
+    src: url(../fonts/Manrope-ExtraBold.6fdca7c1.woff2) format("woff2"),
+      url(../fonts/Manrope-ExtraBold.014a33bb.woff) format("woff");
+    font-weight: 800;
+    font-style: normal;
+  }
+  .pagination-list a {
+    background: white;
+  }
+  .pagination-link {
+    background: white;
+  }
+  body {
+    font-family: "Manrope", arial, sans-serif;
+  }
+  #app .hover a {
+    text-decoration: none;
+    position: relative;
+    margin: 0 3px;
+    display: inline-block;
+    padding: 15px;
+  }
+  #app .hover a:hover {
+    background-color: rgb(225, 225, 255);
+    border-radius: 5px;
+  }
+  #app .hover a::after {
+    position: absolute;
+    content: "";
+    height: 0.05em;
+    top: 100%;
+    background: rgb(26, 77, 128);
+    z-index: 100;
+    left: 0;
+    right: 0;
+    transform: scaleX(0);
+    transition: transform 0.3s cubic-bezier(0.95, 0.05, 0.795, 0.035);
+  }
+  
+  #app .hover a:hover::after {
+    transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+    transform: scaleX(1);
+  }
+  #app {
+    /* font-family: Avenir, Helvetica, Arial, sans-serif; */
+    font-family: "Manrope", arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+    height: auto;
+    min-height: 100vh;
+  }
+  
+  #app #nav a {
+    font-weight: bold;
+    color: #2c3e50;
+    background-color: rgb(236, 233, 255);
+    border-radius: 5px;
+  }
+  
+  #nav a.router-link-exact-active {
+    color: #42b983;
+  }
+  .footerclass
+  {
+      font-size:0.9rem;
+  }
+  .table { font-size: 0.8rem;}
