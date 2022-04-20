@@ -3,6 +3,7 @@
 namespace WHMCS\Module\Addon\SpamManager\app\Models;
 
 use Illuminate\Database\Eloquent\Model;
+
 class EmailTemplates extends Model
 {
     public $timestamps = false;
@@ -12,5 +13,4 @@ class EmailTemplates extends Model
     {
         return $query->where('type', 'product')->where('name', 'LIKE', 'spammanager_%');
     }
-    
 }

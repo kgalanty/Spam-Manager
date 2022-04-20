@@ -9,6 +9,7 @@ use WHMCS\Module\Addon\SpamManager\app\Classes\Logs;
 use WHMCS\Module\Addon\SpamManager\app\Models\EmailQueue;
 use WHMCS\Module\Addon\SpamManager\app\Models\Service;
 use WHMCS\Module\Addon\SpamManager\app\Models\EmailTemplates;
+use WHMCS\Module\Addon\SpamManager\app\Models\QueuesList as QueuesListModel;
 
 class Email extends API
 {
@@ -24,10 +25,19 @@ class Email extends API
 
         $template = EmailTemplates::find($tid);
         $recipients = Service::whereIn('domainstatus', $hostingStatuses)->whereIn('server', $serversID)->get(['tblhosting.id']);
+        $list = QueuesListModel::create(
+            [
+                'templateid' => $tid,
+                'adminid' => $_SESSION['adminid'],
+                'servers' => implode(',', $serversID),
+                'statuses' => implode(',', $hostingStatuses),
+                'date' =>  gmdate('Y-m-d H:i:s')
+            ]
+        );
+
         $rows = [];
-        foreach($recipients as $r)
-        {
-            $rows[] = ['id'=>'', 'tplname' => $template->name, 'hid' => $r->id, 'sent' => '0', 'adminid' => $_SESSION['adminid'], 'date' => gmdate('Y-m-d H:i:s'), 'error' => ''];
+        foreach ($recipients as $r) {
+            $rows[] = ['id' => '', 'list'=> $list->id, 'hid' => $r->id, 'sent' => '0', 'date_sent' => '', 'error' => ''];
         }
         EmailQueue::insert($rows);
         return ['response' => 'success'];

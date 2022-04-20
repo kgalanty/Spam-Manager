@@ -3,18 +3,14 @@
 namespace WHMCS\Module\Addon\SpamManager\app\Models;
 
 use Illuminate\Database\Eloquent\Model;
-class EmailQueue extends Model
+
+class QueuesList extends Model
 {
     public $timestamps = false;
-    protected $table = 'spam_emailqueue';
+    protected $table = 'spam_queueslist';
     //protected $visible = ['id','type', 'name', 'subject', 'message', 'regdate', 'domain', 'product'];
-    public function setAsSent(array $where = [])
-    {
-        if($where)
-        {
-            self::where($where)->update(['sent' => '1']);
-        }
-    }
+    protected $fillable = ['templateid', 'adminid', 'servers', 'statuses', 'date'];
+
     public function scopeNotsent($query)
     {
         return $query->where('sent', '0');
@@ -23,8 +19,12 @@ class EmailQueue extends Model
     {
         return $this->belongsTo('\WHMCS\Module\Addon\SpamManager\app\Models\Admin', 'adminid', 'id');
     }
-    public function service()
+    public function template()
     {
-        return $this->belongsTo('\WHMCS\Module\Addon\SpamManager\app\Models\Service', 'hid', 'id');
+        return $this->belongsTo('\WHMCS\Module\Addon\SpamManager\app\Models\EmailTemplates', 'templateid', 'id');
+    }
+    public function emails()
+    {
+        return $this->hasMany('\WHMCS\Module\Addon\SpamManager\app\Models\EmailQueue', 'list', 'id');
     }
 }
