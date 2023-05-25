@@ -8,7 +8,7 @@ class Service extends \WHMCS\Service\Service
 {
     public $timestamps = false;
     protected $table = 'tblhosting';
-    protected $visible = ['id', 'userid', 'orderid', 'packageid', 'server', 'regdate', 'domain', 'product'];
+    protected $visible = ['id', 'userid', 'orderid', 'packageid', 'server', 'regdate', 'domain', 'product', 'client'];
 
     public function client()
     {

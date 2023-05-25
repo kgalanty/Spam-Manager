@@ -21,15 +21,30 @@ class Email extends API
 
         $tid = $this->input['template_id'];
         $serversID = $this->input['servers'];
+        $productsID = $this->input['products'];
+
         $hostingStatuses = $this->input['statuses'];
 
         $template = EmailTemplates::find($tid);
-        $recipients = Service::whereIn('domainstatus', $hostingStatuses)->whereIn('server', $serversID)->get(['tblhosting.id']);
+        $recipients = Service::whereIn('domainstatus', $hostingStatuses);
+        if (count($serversID)) {
+            $recipients->whereIn('server', $serversID);
+        } else {
+            $serversID = [];
+        }
+        if (count($productsID)) {
+            $recipients->whereIn('packageid', $productsID);
+        } else {
+            $productsID = [];
+        }
+
+        $recipients = $recipients->get(['tblhosting.id']);
         $list = QueuesListModel::create(
             [
                 'templateid' => $tid,
                 'adminid' => $_SESSION['adminid'],
-                'servers' => implode(',', $serversID),
+                'servers' => '',
+                'config' => json_encode(['servers' => $serversID, 'products' => $productsID]),
                 'statuses' => implode(',', $hostingStatuses),
                 'date' =>  gmdate('Y-m-d H:i:s')
             ]
@@ -37,7 +52,7 @@ class Email extends API
 
         $rows = [];
         foreach ($recipients as $r) {
-            $rows[] = ['id' => '', 'list'=> $list->id, 'hid' => $r->id, 'sent' => '0', 'date_sent' => '', 'error' => ''];
+            $rows[] = ['id' => '', 'list' => $list->id, 'hid' => $r->id, 'sent' => '0', 'date_sent' => '', 'error' => ''];
         }
         EmailQueue::insert($rows);
         return ['response' => 'success'];

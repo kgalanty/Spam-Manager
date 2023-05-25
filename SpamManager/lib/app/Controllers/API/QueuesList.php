@@ -5,6 +5,7 @@ namespace WHMCS\Module\Addon\SpamManager\app\Controllers\API;
 use WHMCS\Module\Addon\SpamManager\app\Controllers\API;
 use WHMCS\Database\Capsule as DB;
 use WHMCS\Module\Addon\SpamManager\app\Models\QueuesList as QueuesListModel;
+use WHMCS\Module\Addon\SpamManager\app\Models\Product as ProductsModel;
 use WHMCS\Module\Addon\SpamManager\app\Models\Servers;
 
 class QueuesList extends API
@@ -13,9 +14,14 @@ class QueuesList extends API
     {
         if ($_GET['list']) {
             $list = QueuesListModel::with(['admin', 'template'])->where('id', $_GET['list'])->first();
-            $servers = Servers::whereIn('id', explode(',',$list->servers))->get();
-            $list->statuses_array = explode(',',$list->statuses);
-            return ['list' => $list, 'servers' => $servers ];
+            $config = $list->config ? json_decode($list->config, 1) : ['servers' => [], 'products' => []];
+
+            $serversList = $config['servers'] ? $config['servers'] : explode(',', $list->servers);
+            $servers = Servers::whereIn('id', $serversList)->get();
+            $products =  ProductsModel::with(['group'])->whereIn('id', $config['products'])->orderBy('id', 'ASC')->get();
+            $list->statuses_array = explode(',', $list->statuses);
+
+            return ['list' => $list, 'servers' => $servers, 'products' => $products];
         }
 
         $page = $_GET['page'] == 1 ? 0 : ($_GET['page'] - 1) * $_GET['perpage'];

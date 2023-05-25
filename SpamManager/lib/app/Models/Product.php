@@ -7,7 +7,7 @@ class Product extends Model
 {
     public $timestamps = false;
     protected $table = 'tblproducts';
-    protected $visible = ['id','type', 'name', 'gid'];
+    protected $visible = ['id','type', 'name', 'gid', 'group'];
     public function group()
     {
         return $this->belongsTo('\WHMCS\Module\Addon\SpamManager\app\Models\ProductGroup', 'gid', 'id');

@@ -4,7 +4,10 @@ require_once(__DIR__.'/../../../init.php');
 // {
 //     require_once(__DIR__.'/vendor/autoload.php');
 // }
-
+if(file_exists(__DIR__.'/cron/cronrunning'))
+{
+	exit;
+}
 use WHMCS\Module\Addon\SpamManager\app\Classes\Cron\MailingCron;
 // ini_set('display_errors', 1);
 // ini_set('display_startup_errors', 1);

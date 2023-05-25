@@ -15,7 +15,7 @@ class Queue extends API
         if ($_GET['listid']) {
             return [
                 'total' => EmailQueue::filterList((int)$_GET['listid'])->count(),
-                'queue' => EmailQueue::with(['service', 'service.product', 'service.server'])->filterList((int)$_GET['listid'])->orderBy('id', 'DESC')->skip($page)->take($_GET['perpage'])->get()
+                'queue' => EmailQueue::with(['service', 'service.product', 'service.server', 'service.client'])->filterList((int)$_GET['listid'])->orderBy('id', 'DESC')->skip($page)->take($_GET['perpage'])->get()
             ];
         }
     }
