@@ -1,0 +1,68 @@
+.lighttheme {
+  background-color: rgb(204, 205, 223); 
+    .panel-heading {
+      font-size:0.8rem;
+      padding-left: 0px;
+      margin-bottom: 5px;
+      color: white;
+      background: #7465b6;
+    }
+    .is-latefollowup {
+      background: rgb(252, 186, 186) !important;
+    }
+    .is-reviewpending {
+      background-color: #ffffff;
+      background-size: 50px 50px;
+      background-image: repeating-linear-gradient(
+        45deg,
+        #ffdfdf 0,
+        #ffdfdf 5px,
+        #ffffff 0,
+        #ffffff 50%
+      );
+    }
+    .is-lackorder {
+      background: rgb(255, 255, 255) !important;
+      background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 1) 0%,
+        rgba(250, 138, 0, 1) 100%
+      ) !important;
+    }
+    .is-cannotoffer {
+      background: rgb(254, 255, 190) !important;
+    }
+    .is-duplicate {
+      background: rgb(219, 219, 219) !important;
+    }
+    .is-directsale {
+      background: rgb(170, 255, 184) !important;
+      color: #000;
+    }
+    .is-upgrade {
+      background: rgb(204, 255, 215) !important;
+    }
+    .is-upgradeinvoice {
+      background: rgb(204, 255, 215) !important;
+    }
+      #statstable {
+        background: #acc6ff;
+        color: white;
+        padding: 5px;
+        border-radius: 5px;
+        margin-top:-5px;
+      }
+      #orderschatstable
+      {
+        background: #2b4479;
+        color: white;
+        padding: 5px;
+        margin-top:-5px;
+        border-radius: 5px;
+      }
+      .chatlistheader
+      {
+        margin-bottom: 0;
+      }
+
+  }
