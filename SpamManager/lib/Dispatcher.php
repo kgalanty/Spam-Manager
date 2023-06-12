@@ -90,7 +90,7 @@ class Dispatcher {
                 $smarty->assign('vueComponents', $vueComponents);
                 $smarty->assign('addonPath', '/modules/addons/SpamManager/lib/app');
                 
-                return $smarty->fetch('header.tpl?1').
+                return $smarty->fetch('header.tpl').
                 $smarty->fetch($controllerParam.'@'.$action.'.tpl').
                 $smarty->fetch('footer.tpl');
                 exit;
