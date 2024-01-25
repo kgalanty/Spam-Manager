@@ -29,7 +29,7 @@ class Email extends API
 
         if ($services) {
             $recipients = Service::whereIn('id', $services);
-            $config = ['servers' => $serversID, 'products' => $productsID];
+            $config = ['services' => $services];
         } else {
 
             $recipients = Service::whereIn('domainstatus', $hostingStatuses);

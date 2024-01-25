@@ -25,7 +25,7 @@
           >{{ product.name }}</b-tag
         >
       </p>
-      <p class="panel-heading" style="width: auto" v-if="list.statuses_array">
+      <p class="panel-heading" style="width: auto" v-if="list.statuses">
         Statuses:
         <b-tag
           type="is-link is-light"
@@ -154,6 +154,10 @@ export default {
     }),
     getObjKey(object, key)
     {
+      if(!object)
+      {
+        return ''
+      }
       if(key in object)
       {
         return object[key]
