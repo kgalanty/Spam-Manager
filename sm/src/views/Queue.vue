@@ -25,7 +25,7 @@
           >{{ product.name }}</b-tag
         >
       </p>
-      <p class="panel-heading" style="width: auto">
+      <p class="panel-heading" style="width: auto" v-if="list.statuses_array">
         Statuses:
         <b-tag
           type="is-link is-light"
@@ -58,16 +58,16 @@
               field="service.client"
               v-slot="props"
             >
-              <a
+              <a v-if="props.row.service.client"
                 :href="
                   baseurl +
                   'clientssummary.php?userid=' +
                   props.row.service.client.id
                 "
                 target="_blank"
-                >#{{ props.row.service.client.id }}
-                {{ props.row.service.client.firstname }}
-                {{ props.row.service.client.lastname }}</a
+                >#{{ getObjKey(props.row.service.client, 'id') }}
+                {{ getObjKey(props.row.service.client, 'firstname') }}
+                {{ getObjKey(props.row.service.client, 'lastname') }}</a
               >
             </b-table-column>
             <b-table-column
@@ -92,7 +92,7 @@
               field="service.server"
               v-slot="props"
             >
-              {{ props.row.service.server.name }}
+              {{ getObjKey(props.row.service.server, 'name') }}
             </b-table-column>
             <b-table-column
               centered
@@ -152,6 +152,14 @@ export default {
     ...mapActions({
       getQueue: "QueueStore/getQueue",
     }),
+    getObjKey(object, key)
+    {
+      if(key in object)
+      {
+        return object[key]
+      }
+      return ''
+    },
     changePage(val) {
       this.page = val;
       this.fetchData();

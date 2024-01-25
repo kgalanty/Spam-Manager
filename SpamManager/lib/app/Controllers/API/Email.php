@@ -25,18 +25,27 @@ class Email extends API
 
         $hostingStatuses = $this->input['statuses'];
 
-        $template = EmailTemplates::find($tid);
-        $recipients = Service::whereIn('domainstatus', $hostingStatuses);
-        if (count($serversID)) {
-            $recipients->whereIn('server', $serversID);
+        $services = $this->input['services'];
+
+        if ($services) {
+            $recipients = Service::whereIn('id', $services);
+            $config = ['servers' => $serversID, 'products' => $productsID];
         } else {
-            $serversID = [];
+
+            $recipients = Service::whereIn('domainstatus', $hostingStatuses);
+            if (count($serversID)) {
+                $recipients->whereIn('server', $serversID);
+            } else {
+                $serversID = [];
+            }
+            if (count($productsID)) {
+                $recipients->whereIn('packageid', $productsID);
+            } else {
+                $productsID = [];
+            }
+            $config = ['servers' => $serversID, 'products' => $productsID];
         }
-        if (count($productsID)) {
-            $recipients->whereIn('packageid', $productsID);
-        } else {
-            $productsID = [];
-        }
+
 
         $recipients = $recipients->get(['tblhosting.id']);
         $list = QueuesListModel::create(
@@ -44,9 +53,9 @@ class Email extends API
                 'templateid' => $tid,
                 'adminid' => $_SESSION['adminid'],
                 'servers' => '',
-                'config' => json_encode(['servers' => $serversID, 'products' => $productsID]),
+                'config' => json_encode($config),
                 'statuses' => implode(',', $hostingStatuses),
-                'date' =>  gmdate('Y-m-d H:i:s')
+                'date' => gmdate('Y-m-d H:i:s')
             ]
         );
 

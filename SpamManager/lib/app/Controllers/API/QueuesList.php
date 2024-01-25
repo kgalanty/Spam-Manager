@@ -19,7 +19,7 @@ class QueuesList extends API
             $serversList = $config['servers'] ? $config['servers'] : explode(',', $list->servers);
             $servers = Servers::whereIn('id', $serversList)->get();
             $products =  ProductsModel::with(['group'])->whereIn('id', $config['products'])->orderBy('id', 'ASC')->get();
-            $list->statuses_array = explode(',', $list->statuses);
+            $list->statuses_array = $list->statuses ? explode(',', $list->statuses) : [];
 
             return ['list' => $list, 'servers' => $servers, 'products' => $products];
         }
