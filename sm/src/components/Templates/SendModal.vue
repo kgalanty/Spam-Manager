@@ -21,19 +21,33 @@
             >
               {{ error }}
             </b-notification>
-
+            <p> <b-checkbox v-model="customservers">Custom ID servers list (comma separated)</b-checkbox></p>
             <b-field label="Servers">
               <b-taginput
+              v-if="customservers"
+                style=""
+                v-model="customServersSelected"
+                @input="checkRecipients"
+                allow-new
+                field="name"
+                icon="label"
+                placeholder="Paste comma-separated servers list"
+                size="is-small"
+                type="is-info"
+              >
+              </b-taginput>
+              <b-taginput
+              v-if="!customservers"
                 style=""
                 v-model="serversSelected"
                 :data="serversFiltered"
                 autocomplete
+                allow-new
                 open-on-focus
                 field="name"
                 icon="label"
                 placeholder="Type server name, empty for all"
                 @typing="getFilteredTags"
-                maxtags="3"
                 size="is-small"
                 type="is-info"
                 @input="checkRecipients"
@@ -198,7 +212,7 @@ export default {
     },
     checkRecipients() {
       if (
-        this.serversSelected.length === 0 &&
+        this.serversSelected.length === 0 && this.customServersSelected.length === 0 &&
         this.productsSelected.length === 0
       ) {
         return;
@@ -206,11 +220,13 @@ export default {
       const params = requestHelper.generateParamsForRequest("Recipients", [
         "a=calculateRecipients",
       ]);
+      console.log(this.serversSelected)
       this.error = "";
       this.$api
         .post("addonmodules.php?" + params, {
           hostingstatuses: this.checkboxGroup,
           servers: this.serversSelected,
+          customServers: this.customServersSelected,
           products: this.productsSelected,
         })
         .then((response) => {
@@ -270,7 +286,7 @@ export default {
 
       if (
         this.checkboxGroup.length === 0 &&
-        this.serversSelected.length === 0
+        this.serversSelected.length === 0 && this.customServersSelected.length === 0
       ) {
         this.$buefy.toast.open({
           message:
@@ -280,6 +296,7 @@ export default {
         });
         return;
       }
+      console.log(this.customservers === true ? this.customServersSelected : this.serversSelected.map(({ id }) => id)); return;
       this.sendLoadingBtn = true;
       const params = requestHelper.generateParamsForRequest("Email", []);
       this.error = "";
@@ -287,7 +304,7 @@ export default {
         .post("addonmodules.php?" + params, {
           template_id: this.group,
           statuses: this.checkboxGroup,
-          servers: this.serversSelected.map(({ id }) => id),
+          servers:  this.customservers === true ? this.customServersSelected : this.serversSelected.map(({ id }) => id),
           products: this.productsSelected.map(({ id }) => id),
         })
         .then((response) => {
@@ -319,6 +336,8 @@ export default {
   },
   data() {
     return {
+      customservers: false,
+      customServersSelected: [],
       servicesSelected: [],
       activeTab: 0,
       recipients: 0,
@@ -341,6 +360,11 @@ export default {
       sendLoadingBtn: false,
     };
   },
-  watch: {},
+  watch: {
+    customservers()
+    {
+      this.customServersSelected = []
+    }
+  },
 };
 </script>

@@ -35,6 +35,13 @@
           >{{ status }}</b-tag
         >
       </p>
+      <p class="panel-heading" style="width: auto" v-if="list.statuses">
+        <b-tag
+          type="is-primary is-light"
+          size="is-medium"
+          >Service IDs based queue</b-tag
+        >
+      </p>
       <b-message type="is-danger" has-icon v-if="error">
         {{ error }}
       </b-message>
