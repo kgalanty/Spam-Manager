@@ -28,6 +28,11 @@ class Recipients extends API
                 $productID[] = $product['id'];
             }
             
+            foreach($this->input['customServers'] as $server)
+            {
+                $serversID[] = (int) $server;
+            }
+
             $recipients = Service::whereIn('domainstatus', $hostingStatuses);
             
             if(count($serversID))
